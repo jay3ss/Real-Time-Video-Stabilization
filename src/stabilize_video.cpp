@@ -29,7 +29,6 @@ int main(int argc, char **argv)
     }
 
 
-
     //Create a object of stabilization class
     VideoStab stab;
 
@@ -49,10 +48,13 @@ int main(int argc, char **argv)
     cvtColor(frame_1, frame1, COLOR_BGR2GRAY);
 
     Mat smoothedMat(2,3,CV_64F);
-
+    /*
     VideoWriter outputVideo;
-    outputVideo.open("com.avi" , CV_FOURCC('X' , 'V' , 'I' , 'D'), 30 , frame_1.size());
-
+    if (argc == 3)
+    {
+        outputVideo.open("com.avi" , CV_FOURCC('X' , 'V' , 'I' , 'D'), 30 , frame_1.size());
+    }
+    */
     while(true)
     {
 
@@ -68,10 +70,9 @@ int main(int argc, char **argv)
         Mat smoothedFrame;
 
         smoothedFrame = stab.stabilize(frame_1 , frame_2);
+        //outputVideo.write(smoothedFrame);
 
-        outputVideo.write(smoothedFrame);
-
-        imshow("Stabilized Video" , smoothedFrame);
+        //imshow("Stabilized Video" , smoothedFrame);
 
         waitKey(10);
 
