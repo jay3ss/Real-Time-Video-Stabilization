@@ -1,6 +1,6 @@
 # Real-Time-Video-Stabilization
 
-This is a basic implementation of a real time video stabilization algorithm based on my paper: <br>
+This is a basic implementation of a real time video stabilization algorithm based on Lakshya Kejriwal's paper: <br>
 http://www.sciencedirect.com/science/article/pii/S1877050916314624
 
 ### Prerequisites
