@@ -49,5 +49,7 @@ CTestTestfile.cmake
 # Ignore vim swap files
 *.swp
 
-# Ignore the build file
+# Ignore certain directories
 build/
+release/
+debug/
