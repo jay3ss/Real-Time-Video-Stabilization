@@ -8,15 +8,20 @@ http://www.sciencedirect.com/science/article/pii/S1877050916314624
 The code requires the following 3rd Party Libraries
 
 - opencv-2.4.9
-- g++-5.4.1
+- CMake
 
 
 ### How to Run
 
-- Clone the repository and compile using `g++` and `opencv`.
+- Clone the repository `git clone https://github.com/jay3ss/Real-Time-Video-Stabilization`
+- Create a `build` folder: `mkdir build && cd build`
+- Compile: 
+    1. `cmake ..`
+    2. `make`
 - Change the parameters of Kalman Filter in `videostab.cpp`. (optional)
-- Give the path of your input file or webcam in `main.cpp`.
-- Run the program
+- Run the program (you have two options)
+    1. Use `stabilize_video <filename>`
+    2. Use `main` which will use your webcam
 
 
 ### License
