@@ -4,6 +4,11 @@ And,I modified the smooth step using a simple kalman filter .
 So,It can processes live video streaming.
 modified by chen jia.
 email:chenjia2013@foxmail.com
+Sources:
+
+- http://nghiaho.com/?p=2093
+- http://nghiaho.com/uploads/videostabKalman.cpp
+
 */
 
 #include <opencv2/opencv.hpp>
