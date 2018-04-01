@@ -13,6 +13,7 @@ set(MAIN_SOURCES src/main.cpp src/videostab.cpp)
 set(STABILIZE_VIDEO_SOURCES 
     src/stabilize_video.cpp 
     src/videostab.cpp)
+set(KALMAN_VIDEO_SOURCES src/video_stab_kalman.cpp)
 
 # file(GLOB...) allows for wildcard addition of sources
 # file(GLOB "src/*.cpp")
@@ -22,3 +23,6 @@ target_link_libraries(main ${OpenCV_LIBS})
 
 add_executable(stabilize_video ${STABILIZE_VIDEO_SOURCES})
 target_link_libraries(stabilize_video ${OpenCV_LIBS})
+
+add_executable(video_stab_kalman ${KALMAN_VIDEO_SOURCES})
+target_link_libraries(video_stab_kalman ${OpenCV_LIBS})
