@@ -85,16 +85,19 @@ struct Trajectory
 int main(int argc, char **argv)
 {
 	if(argc < 2) {
-		cout << "./VideoStab [video.avi]" << endl;
+		cout << "./executable <camera-id>" << endl;
 		return 0;
 	}
+
+    int camera_port = atoi(argv[1]);
 	// For further analysis
 	ofstream out_transform("prev_to_cur_transformation.txt");
 	ofstream out_trajectory("trajectory.txt");
 	ofstream out_smoothed_trajectory("smoothed_trajectory.txt");
 	ofstream out_new_transform("new_prev_to_cur_transformation.txt");
 
-	VideoCapture cap(argv[1]);
+	VideoCapture cap/*(argv[1])*/;
+    cap.open(camera_port);
 	assert(cap.isOpened());
 
 	Mat cur, cur_grey;
@@ -102,7 +105,7 @@ int main(int argc, char **argv)
 
 	cap >> prev;//get the first frame.ch
 	cvtColor(prev, prev_grey, COLOR_BGR2GRAY);
-	
+
 	// Step 1 - Get previous to current frame transformation (dx, dy, da) for all frames
 	vector <TransformParam> prev_to_cur_transform; // previous to current
 	// Accumulated frame to frame transform
@@ -123,7 +126,7 @@ int main(int argc, char **argv)
 	double pstd = 4e-3;//can be changed
 	double cstd = 0.25;//can be changed
 	Trajectory Q(pstd,pstd,pstd);// process noise covariance
-	Trajectory R(cstd,cstd,cstd);// measurement noise covariance 
+	Trajectory R(cstd,cstd,cstd);// measurement noise covariance
 	// Step 4 - Generate new set of previous to current transform, such that the trajectory ends up being the same as the smoothed trajectory
 	vector <TransformParam> new_prev_to_cur_transform;
 	//
@@ -132,14 +135,15 @@ int main(int argc, char **argv)
 	Mat T(2,3,CV_64F);
 
 	int vert_border = HORIZONTAL_BORDER_CROP * prev.rows / prev.cols; // get the aspect ratio correct
-	VideoWriter outputVideo; 
-	outputVideo.open("compare.avi" , CV_FOURCC('X','V','I','D'), 24,cvSize(cur.rows, cur.cols*2+10), true);  
+	VideoWriter outputVideo;
+
+    //outputVideo.open("compare.avi" , CV_FOURCC('X','V','I','D'), 24,cvSize(cur.rows, cur.cols*2+10), true);
 	//
 	int k=1;
 	int max_frames = cap.get(CV_CAP_PROP_FRAME_COUNT);
 	Mat last_T;
 	Mat prev_grey_,cur_grey_;
-	 
+
 	while(true) {
 
 		cap >> cur;
@@ -207,7 +211,7 @@ int main(int argc, char **argv)
 			P_ = P+Q; //P_(k) = P(k-1)+Q;
 			// measurement update（correction）
 			K = P_/( P_+R ); //gain;K(k) = P_(k)/( P_(k)+R );
-			X = X_+K*(z-X_); //z-X_ is residual,X(k) = X_(k)+K(k)*(z(k)-X_(k)); 
+			X = X_+K*(z-X_); //z-X_ is residual,X(k) = X_(k)+K(k)*(z(k)-X_(k));
 			P = (Trajectory(1,1,1)-K)*P_; //P(k) = (1-K(k))*P_(k);
 		}
 		//smoothed_trajectory.push_back(X);
@@ -235,7 +239,7 @@ int main(int argc, char **argv)
 		T.at<double>(1,2) = dy;
 
 		Mat cur2;
-		
+
 		warpAffine(prev, cur2, T, cur.size());
 
 		cur2 = cur2(Range(vert_border, cur2.rows-vert_border), Range(HORIZONTAL_BORDER_CROP, cur2.cols-HORIZONTAL_BORDER_CROP));
